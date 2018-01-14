@@ -1,9 +1,10 @@
-
-// Fonts
 @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,700,200");
 
-// Variables
 @import "variables";
 
-// Bootstrap
-@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+@import "~bootstrap/scss/bootstrap.scss";
+@import "~now-ui-kit/assets/sass/now-ui-kit";
+@import "~font-awesome/scss/font-awesome";
+
+@import "custom";
