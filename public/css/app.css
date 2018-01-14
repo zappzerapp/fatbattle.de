@@ -20480,3 +20480,7 @@ Created using IcoMoon - icomoon.io
   clip: auto;
 }
 
+.nav-link {
+    cursor: pointer;
+}
+

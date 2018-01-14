@@ -1,23 +1,26 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Dashboard</div>
-
-                <div class="panel-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
+    <div class="container text-center">
+        @foreach($users->sortByDesc('gainsInPercent') as $user)
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ $user->name }}</h5>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm">
+                            <h6 class="text-muted">Aktuell</h6>
+                            <h5>{{ $user->currentWeight }} kg</h5>
                         </div>
-                    @endif
-
-                    You are logged in!
+                        <div class="col-sm">
+                            <h6 class="text-muted">Ziel</h6>
+                            <h5>{{ $user->goal }} kg</h5>
+                        </div>
+                    </div>
+                    <h6 class="{{ $user->gainsInPercent >= 10 ? 'text-success' : 'text-primary' }}">{{ $user->gainsInPercent }}
+                        %</h6>
                 </div>
             </div>
-        </div>
+        @endforeach
     </div>
-</div>
 @endsection

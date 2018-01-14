@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'weight', 'email', 'password',
     ];
 
     /**
@@ -26,4 +26,30 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function getGoalAttribute()
+    {
+        return str_replace('.', ',', abs($this->weight) - ($this->weight * 0.1));
+    }
+
+    public function getCurrentWeightAttribute()
+    {
+        if ($this->weights->count()) {
+            return str_replace('.', ',', $this->weights->last()->value);
+        } else {
+            return str_replace('.', ',', abs($this->weight));
+        }
+    }
+
+    public function getGainsInPercentAttribute()
+    {
+        $gains = (floatval(str_replace(',', '.', $this->currentWeight)) / abs($this->weight));
+
+        return str_replace('.', ',', abs(round(($gains - 1) * 100, 2)));
+    }
+
+    public function weights()
+    {
+        return $this->hasMany(Weight::class);
+    }
 }
