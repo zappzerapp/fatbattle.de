@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container text-center">
-        @foreach($users->sortByDesc('gainsInPercent') as $user)
+        @forelse ($users->sortByDesc('gainsInPercent') as $user)
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">{{ $user->name }}</h5>
@@ -21,6 +21,8 @@
                         %</h6>
                 </div>
             </div>
-        @endforeach
+        @empty
+            <div>&nbsp;</div>
+        @endforelse
     </div>
 @endsection
