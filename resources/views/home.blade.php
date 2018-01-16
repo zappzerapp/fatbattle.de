@@ -3,7 +3,7 @@
 @section('content')
     <div class="fatboard container text-center">
         @forelse ($users->sortByDesc('gainsInPercent') as $user)
-            <div class="card">
+            <div class="card" data-toggle="modal" data-target="#userChartModal{{ $user->id }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ $user->name }}</h5>
                     <hr>
@@ -17,12 +17,65 @@
                             <h5>{{ $user->goal }} kg</h5>
                         </div>
                     </div>
-                    <h6 class="{{ $user->gainsInPercent >= 10 ? 'text-success' : 'text-primary' }}">{{ $user->gainsInPercent }}
-                        %</h6>
+                    <h6 class="{{ $user->gainsInPercent >= 10 ? 'text-success' : 'text-primary' }}">
+                        <span>{{ $user->gainsInPercent }}%</span>
+                    </h6>
+                </div>
+            </div>
+
+            <div class="modal fade" id="userChartModal{{ $user->id }}" tabindex="-1" role="dialog"
+                 aria-labelledby="userChartLabel{{ $user->id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="userChartLabel{{ $user->id }}">{{ $user->name }}</h4>
+                        </div>
+                        <div class="modal-body">
+                            <canvas id="userChart{{ $user->id }}" width="5" height="3"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
         @empty
             <div>&nbsp;</div>
         @endforelse
     </div>
+@endsection
+
+@section('scripts')
+    <script>
+        @foreach($users as $user)
+        new Chart(document.getElementById('userChart{{ $user->id }}'), {
+            type: 'line',
+            data: {
+                labels: {!! $user->latestWeightDates !!},
+                datasets: [{
+                    label: false,
+                    backgroundColor: 'rgba(28, 81, 124, 0.6)',
+                    borderColor: 'rgba(28, 81, 124, 0.8)',
+                    data: {!! $user->latestWeightValues !!},
+                }]
+            },
+            options: {
+                responsive: true,
+                legend: {
+                    display: false
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+                    }],
+                    yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'kg'
+                        }
+                    }]
+                }
+            }
+        });
+        @endforeach
+    </script>
 @endsection

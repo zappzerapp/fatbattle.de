@@ -2,8 +2,9 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -51,5 +52,18 @@ class User extends Authenticatable
     public function weights()
     {
         return $this->hasMany(Weight::class);
+    }
+
+    public function getLatestWeightValuesAttribute()
+    {
+        return collect(abs($this->weight))->merge($this->weights->sortBy('created_at')->pluck('value'));
+    }
+
+    public function getLatestWeightDatesAttribute()
+    {
+        return collect([0 => $this->created_at])->merge($this->weights->sortBy('created_at')->pluck('created_at'))->map(function ($date) {
+            /** @var Carbon $date */
+            return $date->format('d. M (H:i)');
+        });
     }
 }
