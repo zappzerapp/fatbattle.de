@@ -20480,7 +20480,23 @@ Created using IcoMoon - icomoon.io
   clip: auto;
 }
 
-.nav-link {
-    cursor: pointer;
+.fatboard .card-title {
+  height: 70px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+@media only screen and (min-width: 768px) {
+  .fatboard .card {
+    width: 20rem;
+    height: 15rem;
+  }
 }
 

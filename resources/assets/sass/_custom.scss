@@ -1,3 +1,13 @@
-.nav-link {
-  cursor: pointer;
+.fatboard .card-title {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media only screen and (min-width: 768px) {
+  .fatboard .card {
+    width: 20rem;
+    height: 15rem;
+  }
 }
