@@ -49,6 +49,11 @@ class User extends Authenticatable
         return str_replace('.', ',', abs(round(($gains - 1) * 100, 2)));
     }
 
+    public function getGainsInKgAttribute()
+    {
+        return number_format(str_replace(',', '.', $this->currentWeight) - $this->weight, 1, ',', '');
+    }
+
     public function weights()
     {
         return $this->hasMany(Weight::class);

@@ -18,7 +18,7 @@
                         </div>
                     </div>
                     <h6 class="{{ $user->gainsInPercent >= 10 ? 'text-success' : 'text-primary' }}">
-                        <span>{{ $user->gainsInPercent }}%</span>
+                        <span>{{ $user->gainsInKg }} kg / {{ $user->gainsInPercent }}%</span>
                     </h6>
                 </div>
             </div>
