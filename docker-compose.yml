@@ -1,0 +1,39 @@
+version: '2'
+services:
+  app:
+    image: rmts/apache-php70:latest
+    volumes:
+      - ./:/var/www/html:cached
+      - ~/.ssh:/root/.ssh:cached
+      - /tmp
+    environment:
+      - "VIRTUAL_HOST=fatbattle.lvh.me"
+      - "VIRTUAL_PORT=80"
+    networks:
+      - fatbattlenet
+      - nginx-proxy
+
+  database:
+    image: rmts/database:latest
+    environment:
+      - "MYSQL_DATABASE=${DB_DATABASE}"
+#    ports:
+#      - "33062:3306"
+    networks:
+      - fatbattlenet
+
+  webpack:
+    image: rmts/webpack:latest
+    volumes:
+      - ./:/home/app:cached
+      - /home/app/node_modules
+    networks:
+      - fatbattlenet
+
+
+networks:
+  fatbattlenet:
+    driver: bridge
+  nginx-proxy:
+    external:
+      name: ngnixproxy_default
