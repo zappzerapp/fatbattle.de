@@ -51,7 +51,7 @@ class User extends Authenticatable
 
     public function getGainsInKgAttribute()
     {
-        return number_format(str_replace(',', '.', $this->currentWeight) - $this->weight, 1, ',', '');
+        return number_format(str_replace(',', '.', $this->currentWeight) - abs($this->weight), 1, ',', '');
     }
 
     public function weights()
