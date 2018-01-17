@@ -57,6 +57,9 @@
     </nav>
     @yield('content')
 </div>
+<script>
+    window.pusherKey = '{{ env('PUSHER_APP_KEY') }}';
+</script>
 <script src="{{ asset('js/app.js') }}"></script>
 @yield('scripts')
 </body>

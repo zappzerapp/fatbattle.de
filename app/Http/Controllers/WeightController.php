@@ -29,6 +29,8 @@ class WeightController extends Controller
     {
         Weight::create(['user_id' => auth()->user()->id, 'value' => str_replace(',', '.', $request->weight)]);
 
+        event(\App\Events\WeightUpdated::broadcast());
+
         return redirect('home');
     }
 }
