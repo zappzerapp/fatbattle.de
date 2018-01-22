@@ -6,6 +6,8 @@ services:
       - ./:/var/www/html:cached
       - ~/.ssh:/root/.ssh:cached
       - /tmp
+    ports:
+      - "20202:22"
     environment:
       - "VIRTUAL_HOST=fatbattle.lvh.me"
       - "VIRTUAL_PORT=80"
