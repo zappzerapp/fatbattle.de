@@ -18,7 +18,14 @@
                         </div>
                     </div>
                     <h6 class="{{ $user->gainsInPercent >= 10 ? 'text-success' : 'text-primary' }}">
-                        <span>{{ $user->gainsInKg }} kg / {{ $user->gainsInPercent }}%</span>
+                        <div class="progress">
+                            <div class="progress-bar"
+                                 role="progressbar"
+                                 style="width: {{ str_replace(',', '.', $user->goalPercent) }}%"
+                                 aria-valuenow="{{ $user->goalPercent }}"
+                                 aria-valuemin="0" aria-valuemax="100">{{ $user->goalPercentLabel }}</div>
+                        </div>
+                        {{--<span>{{ $user->gainsInKg }} kg / {{ $user->gainsInPercent }}%</span>--}}
                     </h6>
                 </div>
             </div>

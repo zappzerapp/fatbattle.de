@@ -19,8 +19,8 @@ services:
     image: rmts/database:latest
     environment:
       - "MYSQL_DATABASE=${DB_DATABASE}"
-#    ports:
-#      - "33062:3306"
+    ports:
+      - "33069:3306"
     networks:
       - fatbattlenet
 

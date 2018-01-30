@@ -33,6 +33,35 @@ class User extends Authenticatable
         return str_replace('.', ',', abs($this->weight) - ($this->weight * 0.1));
     }
 
+    public function getGoalPercentAttribute()
+    {
+        return number_format($this->numberCurrentGain / $this->numberTargetGain * 100, 1);
+    }
+
+    public function getGoalPercentLabelAttribute()
+    {
+        if ((int)$this->goalPercent) {
+            $return = str_replace('.', ',', $this->goalPercent).'%';
+//            $return.= " von {$this->numberTargetGain}kg";
+
+            return $return;
+        }
+
+        return '';
+    }
+
+    public function getNumberCurrentGainAttribute()
+    {
+        $lastWeight = (float)optional($this->weights->last())->value ?: $this->weight;
+
+        return abs($lastWeight - $this->weight);
+    }
+
+    public function getNumberTargetGainAttribute()
+    {
+        return abs($this->weight * 0.1);
+    }
+
     public function getCurrentWeightAttribute()
     {
         if ($this->weights->count()) {
