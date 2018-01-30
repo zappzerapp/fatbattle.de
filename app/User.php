@@ -30,7 +30,7 @@ class User extends Authenticatable
 
     public function getMissingWeightAttribute()
     {
-        return abs($this->numberCurrentGain - ($this->weight * 0.1));
+        return abs($this->numberCurrentGain - (($this->weight > 0 ? $this->weight : abs($this->weight)) * 0.1));
     }
 
     public function getGoalAttribute()
@@ -59,7 +59,7 @@ class User extends Authenticatable
     {
         $lastWeight = (float)optional($this->weights->last())->value ?: $this->weight;
 
-        return abs($lastWeight - $this->weight);
+        return abs($lastWeight - ($this->weight > 0 ? $this->weight : abs($this->weight)));
     }
 
     public function getNumberTargetGainAttribute()
