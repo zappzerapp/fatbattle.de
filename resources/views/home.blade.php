@@ -6,6 +6,7 @@
             <div class="card" data-toggle="modal" data-target="#userChartModal{{ $user->id }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ $user->name }}</h5>
+                    Noch <strong>{{ $user->missingWeight }} kg</strong>
                     <hr>
                     <div class="row">
                         <div class="col-sm">
@@ -18,7 +19,15 @@
                         </div>
                     </div>
                     <h6 class="{{ $user->gainsInPercent >= 10 ? 'text-success' : 'text-primary' }}">
-                        <span>{{ $user->gainsInKg }} kg / {{ $user->gainsInPercent }}%</span>
+
+                        <div class="progress">
+                            <div class="progress-bar"
+                                 role="progressbar"
+                                 style="width: {{ $user->goalPercent }}%"
+                                 aria-valuenow="{{ $user->goalPercent }}"
+                                 aria-valuemin="0" aria-valuemax="100">{{ $user->goalPercentLabel }}</div>
+                        </div>
+                        {{--<span>{{ $user->gainsInKg }} kg / {{ $user->gainsInPercent }}%</span>--}}
                     </h6>
                 </div>
             </div>
