@@ -28,6 +28,11 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function getMissingWeightAttribute()
+    {
+        return abs($this->numberCurrentGain - ($this->weight * 0.1));
+    }
+
     public function getGoalAttribute()
     {
         return str_replace('.', ',', abs($this->weight) - ($this->weight * 0.1));
