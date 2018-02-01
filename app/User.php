@@ -16,7 +16,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'weight', 'email', 'password',
+        'name',
+        'weight',
+        'email',
+        'password',
     ];
 
     /**
@@ -25,17 +28,22 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
     public function getMissingWeightAttribute()
     {
-        return abs($this->numberCurrentGain - (($this->weight > 0 ? $this->weight : abs($this->weight)) * 0.1));
+        $targetGain = $this->weight > 0 ? $this->weight : abs($this->weight);
+        $missingWeight = abs($this->numberCurrentGain - ($targetGain * 0.1));
+
+        return $this->readableFormat($missingWeight);
     }
 
     public function getGoalAttribute()
     {
-        return str_replace('.', ',', abs($this->weight) - ($this->weight * 0.1));
+        return $this->readableFormat(abs($this->weight) - ($this->weight * 0.1));
+//        return str_replace('.', ',', abs($this->weight) - ($this->weight * 0.1));
     }
 
     public function getGoalPercentAttribute()
@@ -46,10 +54,7 @@ class User extends Authenticatable
     public function getGoalPercentLabelAttribute()
     {
         if ((int)$this->goalPercent) {
-            $return = str_replace('.', ',', $this->goalPercent).'%';
-//            $return.= " von {$this->numberTargetGain}kg";
-
-            return $return;
+            return $this->readableFormat($this->goalPercent) . '%';
         }
 
         return '';
@@ -80,12 +85,12 @@ class User extends Authenticatable
     {
         $gains = (floatval(str_replace(',', '.', $this->currentWeight)) / abs($this->weight));
 
-        return str_replace('.', ',', abs(round(($gains - 1) * 100, 2)));
+        return $this->asFloat(abs(round(($gains - 1) * 100, 2)));
     }
 
     public function getGainsInKgAttribute()
     {
-        return number_format(str_replace(',', '.', $this->currentWeight) - abs($this->weight), 1, ',', '');
+        return $this->readableFormat(str_replace(',', '.', $this->currentWeight) - abs($this->weight));
     }
 
     public function weights()
@@ -100,9 +105,25 @@ class User extends Authenticatable
 
     public function getLatestWeightDatesAttribute()
     {
-        return collect([0 => $this->created_at])->merge($this->weights->sortBy('created_at')->pluck('created_at'))->map(function ($date) {
+        return collect([0 => $this->created_at])->merge($this->weights->sortBy('created_at')->pluck('created_at'))->map(function (
+            $date
+        ) {
             /** @var Carbon $date */
             return $date->format('d. M (H:i)');
         });
+    }
+
+    private function readableFormat($weight)
+    {
+        return number_format($weight, 1, ',', '.');
+    }
+
+    /**
+     * @param String $weightLabel
+     * @return float|mixed
+     */
+    private function asFloat($weightLabel)
+    {
+        return str_replace('.', ',', $weightLabel);
     }
 }
