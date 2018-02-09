@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="fatboard container text-center">
-        @forelse ($users->sortByDesc('gainsInPercent') as $user)
+        @forelse ($users->sortByDesc('goalPercent') as $user)
             <div class="card" data-toggle="modal" data-target="#userChartModal{{ $user->id }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ $user->name }}</h5>
@@ -18,10 +18,9 @@
                             <h5>{{ $user->goal }} kg</h5>
                         </div>
                     </div>
-                    <h6 class="{{ $user->gainsInPercent >= 10 ? 'text-success' : 'text-primary' }}">
-
+                    <h6>
                         <div class="progress">
-                            <div class="progress-bar"
+                            <div class="progress-bar {{ $user->goalPercent >= 100 ? 'bg-success text-black' : '' }}"
                                  role="progressbar"
                                  style="width: {{ $user->goalPercent }}%"
                                  aria-valuenow="{{ $user->goalPercent }}"
