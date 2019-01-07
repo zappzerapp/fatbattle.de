@@ -6,7 +6,11 @@
             <div class="card" data-toggle="modal" data-target="#userChartModal{{ $user->id }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ $user->name }}</h5>
-                    Noch <strong>{{ $user->missingWeight }} kg</strong>
+                    @if($user->goalPercent >= 100)
+                        <strong>{{ $user->missingWeight }} kg</strong> darüber
+                    @else
+                        Noch <strong>{{ $user->missingWeight }} kg</strong>
+                    @endif
                     <hr>
                     <div class="row">
                         <div class="col-sm">

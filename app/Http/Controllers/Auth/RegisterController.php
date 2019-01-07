@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
+use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
@@ -63,9 +63,15 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $weight = str_replace(',', '.', $data['weight']);
+
+        if (array_get($data, 'battleType') == 'gain') {
+            $weight = $weight * -1;
+        }
+
         return User::create([
             'name' => $data['name'],
-            'weight' => str_replace(',', '.', $data['weight']),
+            'weight' => $weight,
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);

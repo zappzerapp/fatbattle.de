@@ -41,7 +41,13 @@
                 @else
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('weight.index') }}">Wiegen</a>
+                            <a class="nav-link" href="{{ url('') }}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('rules') }}">Regeln</a>
+                        </li>
+                        <li class="nav-item px-3">
+                            <a class="nav-link" href="{{ route('weight.index') }}"><i class="fa fa-balance-scale"></i> Wiegen</a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('logout') }}" class="nav-link"
