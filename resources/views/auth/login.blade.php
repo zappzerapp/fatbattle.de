@@ -1,7 +1,7 @@
 @extends('layouts.login')
 
 @section('content')
-    <div class="page-header-image" style="background:url({{ asset('img/vintage-concrete.png') }})"></div>
+    <div class="page-header-image" style="background-image:url({{ asset('img/brgr.jpg') }})"></div>
     <div class="container">
         <div class="col-md-4 content-center">
             <div class="card card-login card-plain">

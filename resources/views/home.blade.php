@@ -24,7 +24,7 @@
                     </div>
                     <h6>
                         <div class="progress">
-                            <div class="progress-bar {{ $user->goalPercent >= 100 ? 'bg-success text-black' : '' }}"
+                            <div class="progress-bar text-black {{ $user->goalPercent >= 100 ? 'basic' : 'bg-success' }}"
                                  role="progressbar"
                                  style="width: {{ $user->goalPercent }}%"
                                  aria-valuenow="{{ $user->goalPercent }}"
@@ -64,8 +64,8 @@
                 labels: {!! $user->latestWeightDates !!},
                 datasets: [{
                     label: false,
-                    backgroundColor: 'rgba(28, 81, 124, 0.6)',
-                    borderColor: 'rgba(28, 81, 124, 0.8)',
+                    backgroundColor: 'rgba(167, 164, 0, 0.6)',
+                    borderColor: 'rgba(167, 164, 0, 0.9)',
                     data: {!! $user->latestWeightValues !!},
                 }]
             },

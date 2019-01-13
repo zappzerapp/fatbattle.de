@@ -14,7 +14,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-<div id="app" style="background:url({{ asset('img/vintage-concrete.png') }}); min-height: 100vh">
+<div id="app" style="background-image:url({{ asset('img/brgr.jpg') }}); min-height: 100vh; background-size: cover">
     <nav class="navbar navbar-expand-lg bg-dark">
         <div class="container">
             <div class="navbar-translate">
