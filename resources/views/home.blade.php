@@ -5,7 +5,8 @@
         @forelse ($users->sortByDesc('goalPercent') as $user)
             <div class="card" data-toggle="modal" data-target="#userChartModal{{ $user->id }}">
                 <div class="card-body">
-                    <h5 class="card-title">{{ $user->name }}</h5>
+                    <h5 class="card-title">{{ $user->name }}
+                    <small class="pl-1 text-black-50">({{ str_replace('.', ',', abs($user->weight)) }}kg)</small></h5>
                     @if($user->goalPercent >= 100)
                         <strong>{{ $user->missingWeight }} kg</strong> darüber
                     @else
