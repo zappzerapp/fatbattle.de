@@ -15,6 +15,6 @@ class HomeController extends Controller
     {
         $users = User::with(['weights'])->get();
 
-        return view('home', compact(['users']));
+        return view('home', compact('users'));
     }
 }

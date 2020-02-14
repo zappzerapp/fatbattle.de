@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -65,7 +66,7 @@ class RegisterController extends Controller
     {
         $weight = str_replace(',', '.', $data['weight']);
 
-        if (array_get($data, 'battleType') == 'gain') {
+        if (Arr::get($data, 'battleType') == 'gain') {
             $weight = $weight * -1;
         }
 
