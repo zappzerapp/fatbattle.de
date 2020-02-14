@@ -48,7 +48,10 @@ class User extends Authenticatable
 
     public function getGoalPercentAttribute()
     {
-        return number_format($this->numberCurrentGain / $this->numberTargetGain * 100, 1);
+        $fail = $this->weight > 0 && $this->currentWeight < $this->goal;
+
+        $percent = number_format($this->numberCurrentGain / $this->numberTargetGain * 100, 1);
+        return $fail ? $percent * -1 : $percent;
     }
 
     public function getGoalPercentLabelAttribute()

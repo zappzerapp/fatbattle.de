@@ -25,7 +25,7 @@
                     </div>
                     <h6>
                         <div class="progress">
-                            <div class="progress-bar text-black {{ $user->goalPercent >= 100 ? 'basic' : 'bg-success' }}"
+                            <div class="progress-bar text-black {{ $user->goalPercent >= 100 ? 'bg-success' : $user->goalPercent < 0 ? 'bg-danger' : 'basic' }}"
                                  role="progressbar"
                                  style="width: {{ $user->goalPercent }}%"
                                  aria-valuenow="{{ $user->goalPercent }}"
