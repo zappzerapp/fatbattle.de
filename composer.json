@@ -14,7 +14,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^1.1",
         "lorisleiva/laravel-deployer": "^0.2.17",
-        "pusher/pusher-php-server": "^3.3"
+        "pusher/pusher-php-server": "^4.1"
     },
     "require-dev": {
         "facade/ignition": "^1.4",
