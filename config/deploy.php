@@ -95,6 +95,7 @@ return [
         'application' => env('APP_NAME', 'Laravel'),
         'repository' => 'https://github.com/zappzerapp/fatbattle.de.git',
         'php_fpm_service' => 'php7.4-fpm',
+        'app_user' => 'www-data',
     ],
 
     /*
