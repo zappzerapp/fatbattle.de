@@ -53,4 +53,6 @@ window.Echo = new Echo({
     key: window.pusherKey,
     cluster: 'eu',
     encrypted: true,
+    enabledTransports: ['ws', 'wss'],
+    disabledTransports: ['sockjs', 'xhr_polling', 'xhr_streaming'],
 });
