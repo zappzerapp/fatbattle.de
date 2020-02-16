@@ -5,6 +5,7 @@
     align-items: center;
     justify-content: center;
   }
+
   .modal-title {
     margin-top: 0;
   }
@@ -17,8 +18,12 @@
   }
 }
 
-.basic {
-  background-color: #ffa400
+.progress-bar {
+  overflow: visible;
+
+  &.basic {
+    background-color: #ffa400
+  }
 }
 
 .card {

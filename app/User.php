@@ -48,7 +48,13 @@ class User extends Authenticatable
 
     public function getGoalPercentAttribute()
     {
-        $fail = $this->weight > 0 && $this->currentWeight < $this->goal;
+        $currentWeight = floatval(str_replace(",", ".", $this->currentWeight));
+
+        if ($this->weight > 0) {
+            $fail = $currentWeight >= $this->weight;
+        } else {
+            $fail = $currentWeight <= $this->weight;
+        }
 
         $percent = number_format($this->numberCurrentGain / $this->numberTargetGain * 100, 1);
         return $fail ? $percent * -1 : $percent;
@@ -56,8 +62,8 @@ class User extends Authenticatable
 
     public function getGoalPercentLabelAttribute()
     {
-        if ((int)$this->goalPercent) {
-            return $this->readableFormat($this->goalPercent) . '%';
+        if ((int) $this->goalPercent) {
+            return $this->readableFormat($this->goalPercent).'%';
         }
 
         return '';
@@ -65,7 +71,7 @@ class User extends Authenticatable
 
     public function getNumberCurrentGainAttribute()
     {
-        $lastWeight = (float)optional($this->weights->last())->value ?: abs($this->weight);
+        $lastWeight = (float) optional($this->weights->last())->value ?: abs($this->weight);
 
         return abs($lastWeight - ($this->weight > 0 ? $this->weight : abs($this->weight)));
     }
@@ -122,7 +128,7 @@ class User extends Authenticatable
     }
 
     /**
-     * @param String $weightLabel
+     * @param  String  $weightLabel
      * @return float|mixed
      */
     private function asFloat($weightLabel)
