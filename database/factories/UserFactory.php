@@ -1,6 +1,8 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace Database\Factories;
+
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,12 +15,21 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\User::class, function (Faker $faker) {
-    return [
-        'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
-        'weight' => $faker->numberBetween(80, 100),
-        'password' => bcrypt('secret'),
-        'remember_token' => str_random(10),
-    ];
-});
+class UserFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'name' => $this->faker->name,
+            'email' => $this->faker->unique()->safeEmail,
+            'weight' => $this->faker->numberBetween(80, 100),
+            'password' => bcrypt('secret'),
+            'remember_token' => str_random(10),
+        ];
+    }
+}
