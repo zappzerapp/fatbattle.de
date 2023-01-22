@@ -1,41 +1,102 @@
-version: '2'
+# For more information: https://laravel.com/docs/sail
+version: '3'
 services:
-  app:
-    image: rmts/app:7.2-ubuntu18
-    volumes:
-      - ./:/var/www/html
-      - ~/.ssh:/root/.ssh:cached
-      - /tmp
-    ports:
-      - "20202:22"
-    environment:
-      - "VIRTUAL_HOST=fatbattle.lvh.me"
-      - "VIRTUAL_PORT=80"
-    networks:
-      - fatbattlenet
-      - nginx-proxy
+    laravel.test:
+        build:
+            context: vendor/rmts/scoop-os/docker/8.2
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '${WWWGROUP}'
+        image: sail-8.2/app
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        ports:
+            - '${APP_PORT:-80}:80'
+            - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
+        environment:
+            WWWUSER: '${WWWUSER}'
+            LARAVEL_SAIL: 1
+            XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
+            XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
+        volumes:
+            - '.:/var/www/html'
+            - '~/.composer/auth.json:/home/sail/.composer/auth.json:delegated'
+            - '~/.ssh:/home/sail/.ssh'
+        networks:
+            - sail
+        depends_on:
+            - mariadb
+            - redis
+            - elasticsearch
+    mariadb:
+        image: 'mariadb:10.6'
+        ports:
+            - '${FORWARD_DB_PORT:-3306}:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ROOT_HOST: "%"
+            MYSQL_DATABASE: '${DB_DATABASE}'
+            MYSQL_USER: '${DB_USERNAME}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+        volumes:
+            - 'fatbattle-sail-mariadb:/var/lib/mysql'
+            - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
+        networks:
+            - sail
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
+            retries: 3
+            timeout: 5s
+    redis:
+        image: 'redis:alpine'
+        ports:
+            - '${FORWARD_REDIS_PORT:-6379}:6379'
+        volumes:
+            - 'fatbattle-sail-redis:/data'
+        networks:
+            - sail
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            retries: 3
+            timeout: 5s
 
-  database:
-    image: rmts/database:10.2
-    environment:
-      - "MYSQL_DATABASE=${DB_DATABASE}"
-    ports:
-      - "33069:3306"
-    networks:
-      - fatbattlenet
+    elasticsearch:
+        image: elasticsearch:8.5.3
+        logging:
+            options:
+                max-size: 128m
+        environment:
+            discovery.type: single-node
+            xpack.security.enabled: false
+        volumes:
+            - fatbattle-sail-elasticsearch:/usr/share/elasticsearch/data:rw
+        ports:
+            - '9200:9200'
+        networks:
+            - sail
 
-  webpack:
-    image: rmts/webpack:9
-    volumes:
-      - ./:/home/app:cached
-      - /home/app/node_modules
-    networks:
-      - fatbattlenet
-
-
+    kibana:
+        image: kibana:8.5.3
+        logging:
+            options:
+                max-size: 128m
+        depends_on:
+            - elasticsearch
+        environment:
+            VIRTUAL_HOST: localhost
+            VIRTUAL_PORT: 5601
+        ports:
+            - '5601:5601'
+        networks:
+            - sail
 networks:
-  fatbattlenet:
-    driver: bridge
-  nginx-proxy:
-    external:
-      name: docker_default
+    sail:
+        driver: bridge
+volumes:
+    fatbattle-sail-mariadb:
+        driver: local
+    fatbattle-sail-redis:
+        driver: local
+    fatbattle-sail-elasticsearch:
+        driver: local
