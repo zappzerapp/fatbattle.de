@@ -74,7 +74,7 @@ class User extends Authenticatable
 
     public function getNumberCurrentGainAttribute()
     {
-        $lastWeight = (float) optional($this->weights->last())->value ?: abs($this->weight);
+        $lastWeight = (float) $this->weights->last()?->value ?: abs($this->weight);
 
         return abs($lastWeight - ($this->weight > 0 ? $this->weight : abs($this->weight)));
     }
