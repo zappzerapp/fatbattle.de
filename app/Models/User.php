@@ -1,13 +1,15 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
+    use HasFactory;
     use Notifiable;
 
     /**
@@ -48,7 +50,7 @@ class User extends Authenticatable
 
     public function getGoalPercentAttribute()
     {
-        $currentWeight = floatval(str_replace(",", ".", $this->currentWeight));
+        $currentWeight = floatval(str_replace(',', '.', $this->currentWeight));
 
         if ($this->weight > 0) {
             $fail = $currentWeight >= $this->weight;
@@ -57,6 +59,7 @@ class User extends Authenticatable
         }
 
         $percent = number_format($this->numberCurrentGain / $this->numberTargetGain * 100, 1);
+
         return $fail ? $percent * -1 : $percent;
     }
 
@@ -71,7 +74,7 @@ class User extends Authenticatable
 
     public function getNumberCurrentGainAttribute()
     {
-        $lastWeight = (float) optional($this->weights->last())->value ?: abs($this->weight);
+        $lastWeight = (float) $this->weights->last()?->value ?: abs($this->weight);
 
         return abs($lastWeight - ($this->weight > 0 ? $this->weight : abs($this->weight)));
     }
@@ -128,7 +131,7 @@ class User extends Authenticatable
     }
 
     /**
-     * @param  String  $weightLabel
+     * @param  string  $weightLabel
      * @return float|mixed
      */
     private function asFloat($weightLabel)

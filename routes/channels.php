@@ -12,7 +12,7 @@
 */
 
 Broadcast::channel('members', function ($user) {
-    if ($user instanceof \App\User) {
+    if ($user instanceof \App\Models\User) {
         return true;
     }
 

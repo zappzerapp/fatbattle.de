@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\WeightController;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,13 +21,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
-
 Route::middleware(['auth'])->group(function () {
-    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-    Route::resource('weight', 'WeightController', ['only' => ['index', 'store']]);
+    Route::resource('weight', WeightController::class)->only('index', 'store');
 
-    Route::get('rules', function(){
+    Route::get('rules', function () {
         return view('rules');
     })->name('rules');
 });

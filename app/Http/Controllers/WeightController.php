@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Weight;
+use App\Models\Weight;
 use Illuminate\Http\Request;
 
 class WeightController extends Controller
@@ -22,7 +22,7 @@ class WeightController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
