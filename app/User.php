@@ -48,7 +48,7 @@ class User extends Authenticatable
 
     public function getGoalPercentAttribute()
     {
-        $currentWeight = floatval(str_replace(",", ".", $this->currentWeight));
+        $currentWeight = floatval(str_replace(',', '.', $this->currentWeight));
 
         if ($this->weight > 0) {
             $fail = $currentWeight >= $this->weight;
@@ -57,6 +57,7 @@ class User extends Authenticatable
         }
 
         $percent = number_format($this->numberCurrentGain / $this->numberTargetGain * 100, 1);
+
         return $fail ? $percent * -1 : $percent;
     }
 
@@ -128,7 +129,7 @@ class User extends Authenticatable
     }
 
     /**
-     * @param  String  $weightLabel
+     * @param  string  $weightLabel
      * @return float|mixed
      */
     private function asFloat($weightLabel)

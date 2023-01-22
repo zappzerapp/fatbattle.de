@@ -17,13 +17,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
-
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', 'HomeController@index')->name('home');
 
     Route::resource('weight', 'WeightController', ['only' => ['index', 'store']]);
 
-    Route::get('rules', function(){
+    Route::get('rules', function () {
         return view('rules');
     })->name('rules');
 });
