@@ -9,7 +9,7 @@ use Tests\TestCase;
 class WeightTest extends TestCase
 {
     /** @test */
-    public function it_can_store_weights_with_decimalcomma()
+    public function it_can_store_weights_with_decimalcomma(): void
     {
         // No (middleware) token missmatch please
         $user = $this->withoutMiddleware()->anAuthenticatedUser();
@@ -20,7 +20,7 @@ class WeightTest extends TestCase
     }
 
     /** @test */
-    public function it_can_store_weights_with_decimalpoint()
+    public function it_can_store_weights_with_decimalpoint(): void
     {
         // No (middleware) token missmatch please
         $user = $this->withoutMiddleware()->anAuthenticatedUser();
@@ -31,7 +31,7 @@ class WeightTest extends TestCase
     }
 
     /** @test */
-    public function after_weighting_an_info_is_broadcasted()
+    public function after_weighting_an_info_is_broadcasted(): void
     {
         Event::fake();
 

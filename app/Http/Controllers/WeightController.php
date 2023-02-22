@@ -3,16 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Weight;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class WeightController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View
     {
         $user = auth()->user();
 
@@ -21,11 +21,8 @@ class WeightController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         Weight::create(['user_id' => auth()->user()->id, 'value' => str_replace(',', '.', $request->weight)]);
 

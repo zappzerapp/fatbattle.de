@@ -131,10 +131,9 @@ class User extends Authenticatable
     }
 
     /**
-     * @param  string  $weightLabel
      * @return float|mixed
      */
-    private function asFloat($weightLabel)
+    private function asFloat(string $weightLabel)
     {
         return str_replace('.', ',', $weightLabel);
     }
