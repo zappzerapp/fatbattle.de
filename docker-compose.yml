@@ -12,7 +12,6 @@ services:
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
-            - '${APP_PORT:-80}:80'
             - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
         environment:
             WWWUSER: '${WWWUSER}'
@@ -25,14 +24,25 @@ services:
             - '~/.ssh:/home/sail/.ssh'
         networks:
             - sail
+            - staudacher-proxy
         depends_on:
             - mariadb
             - redis
-            - elasticsearch
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.fatbattle.entrypoints=http"
+            - "traefik.http.routers.fatbattle.rule=Host(`fatbattle.test`)"
+            - "traefik.http.middlewares.fatbattle-https-redirect.redirectscheme.scheme=https"
+            - "traefik.http.routers.fatbattle.middlewares=fatbattle-https-redirect"
+            - "traefik.http.routers.fatbattle-secure.entrypoints=https"
+            - "traefik.http.routers.fatbattle-secure.rule=Host(`fatbattle.test`)"
+            - "traefik.http.routers.fatbattle-secure.tls=true"
+            - "traefik.http.routers.fatbattle-secure.tls.certresolver=default"
+            - "traefik.http.routers.fatbattle-secure.service=fatbattle"
+            - "traefik.http.services.fatbattle.loadbalancer.server.port=80"
+            - "traefik.docker.network=staudacher-proxy"
     mariadb:
         image: 'mariadb:10.6'
-        ports:
-            - '${FORWARD_DB_PORT:-3306}:3306'
         environment:
             MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
             MYSQL_ROOT_HOST: "%"
@@ -51,8 +61,6 @@ services:
             timeout: 5s
     redis:
         image: 'redis:alpine'
-        ports:
-            - '${FORWARD_REDIS_PORT:-6379}:6379'
         volumes:
             - 'fatbattle-sail-redis:/data'
         networks:
@@ -61,39 +69,11 @@ services:
             test: ["CMD", "redis-cli", "ping"]
             retries: 3
             timeout: 5s
-
-    elasticsearch:
-        image: elasticsearch:8.5.3
-        logging:
-            options:
-                max-size: 128m
-        environment:
-            discovery.type: single-node
-            xpack.security.enabled: false
-        volumes:
-            - fatbattle-sail-elasticsearch:/usr/share/elasticsearch/data:rw
-        ports:
-            - '9200:9200'
-        networks:
-            - sail
-
-    kibana:
-        image: kibana:8.5.3
-        logging:
-            options:
-                max-size: 128m
-        depends_on:
-            - elasticsearch
-        environment:
-            VIRTUAL_HOST: localhost
-            VIRTUAL_PORT: 5601
-        ports:
-            - '5601:5601'
-        networks:
-            - sail
 networks:
     sail:
         driver: bridge
+    staudacher-proxy:
+        external: true
 volumes:
     fatbattle-sail-mariadb:
         driver: local
