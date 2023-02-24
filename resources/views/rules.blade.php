@@ -7,7 +7,7 @@
                 <h4>Regeln</h4>
                 <p>
                     <span class="badge badge-primary">1</span>
-                    <span>Entweder 10% Abnahme <strong>oder</strong> 10% Zunahme des Startgewichts</span>
+                    <span>Entweder {{ config('fatbattle.target_factor') * 100 }}% Abnahme <strong>oder</strong> {{ config('fatbattle.target_factor') * 100 }}% Zunahme des Startgewichts</span>
                 </p>
                 <p>
                     <span class="badge badge-primary">2</span>

@@ -37,15 +37,15 @@ class User extends Authenticatable
     public function getMissingWeightAttribute()
     {
         $targetGain = $this->weight > 0 ? $this->weight : abs($this->weight);
-        $missingWeight = abs($this->numberCurrentGain - ($targetGain * 0.1));
+        $missingWeight = abs($this->numberCurrentGain - ($targetGain * config('fatbattle.target_factor')));
 
         return $this->readableFormat($missingWeight);
     }
 
     public function getGoalAttribute()
     {
-        return $this->readableFormat(abs($this->weight) - ($this->weight * 0.1));
-//        return str_replace('.', ',', abs($this->weight) - ($this->weight * 0.1));
+        return $this->readableFormat(abs($this->weight) - ($this->weight * config('fatbattle.target_factor')));
+//        return str_replace('.', ',', abs($this->weight) - ($this->weight * config('fatbattle.target_factor')));
     }
 
     public function getGoalPercentAttribute()
@@ -81,7 +81,7 @@ class User extends Authenticatable
 
     public function getNumberTargetGainAttribute()
     {
-        return abs($this->weight * 0.1);
+        return abs($this->weight * config('fatbattle.target_factor'));
     }
 
     public function getCurrentWeightAttribute()
